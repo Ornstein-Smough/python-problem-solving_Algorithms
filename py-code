@@ -1,0 +1,175 @@
+"""
+Week 11 – Problem-Solving & Algorithms
+--------------------------------------
+Covers:
+1. Linear & Binary Search
+2. Bubble / Selection / Insertion Sort
+3. Recursion: Factorial, Fibonacci
+4. Tower of Hanoi
+5. Mini Project: Flashcard Quiz App
+"""
+
+import random
+
+# -------------------------------
+# 1. Searching Algorithms
+# -------------------------------
+def linear_search(arr, target):
+    """Check each element one by one."""
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+
+def binary_search(arr, target):
+    """Binary search (array must be sorted)."""
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+# -------------------------------
+# 2. Sorting Algorithms
+# -------------------------------
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
+
+# -------------------------------
+# 3. Recursion Examples
+# -------------------------------
+def factorial(n):
+    """Recursive factorial function."""
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+
+def fibonacci(n):
+    """Recursive Fibonacci function."""
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# -------------------------------
+# 4. Tower of Hanoi
+# -------------------------------
+def tower_of_hanoi(n, source, target, auxiliary):
+    """Recursive Tower of Hanoi solver."""
+    if n == 1:
+        print(f"Move disk 1 from {source} to {target}")
+        return
+    tower_of_hanoi(n - 1, source, auxiliary, target)
+    print(f"Move disk {n} from {source} to {target}")
+    tower_of_hanoi(n - 1, auxiliary, target, source)
+
+# -------------------------------
+# 5. Mini Project: Flashcard Quiz App
+# -------------------------------
+class FlashcardQuiz:
+    def __init__(self):
+        self.questions = {
+            "What is the capital of France?": "Paris",
+            "What is 5 * 6?": "30",
+            "Who wrote 'Hamlet'?": "Shakespeare",
+            "What is the square root of 64?": "8",
+            "What is the chemical symbol for water?": "H2O"
+        }
+        self.score = 0
+
+    def start_quiz(self):
+        print("\n--- Flashcard Quiz ---")
+        items = list(self.questions.items())
+        random.shuffle(items)
+
+        for q, a in items:
+            user_ans = input(q + " ").strip()
+            if user_ans.lower() == a.lower():
+                print("Correct!")
+                self.score += 1
+            else:
+                print(f"Wrong! Correct answer: {a}")
+
+        print(f"\nFinal Score: {self.score}/{len(self.questions)}")
+
+# -------------------------------
+# Main Menu
+# -------------------------------
+def main():
+    while True:
+        print("\n===== Week 11: Problem-Solving & Algorithms =====")
+        print("1. Linear & Binary Search")
+        print("2. Sorting Algorithms")
+        print("3. Recursion (Factorial, Fibonacci)")
+        print("4. Tower of Hanoi")
+        print("5. Flashcard Quiz App (Mini Project)")
+        print("6. Exit")
+
+        choice = input("Choose an option (1-6): ").strip()
+
+        if choice == "1":
+            arr = [3, 7, 2, 9, 12, 5]
+            target = 9
+            print("Array:", arr)
+            print(f"Linear search for {target} → Index:", linear_search(arr, target))
+            arr.sort()
+            print("Sorted Array:", arr)
+            print(f"Binary search for {target} → Index:", binary_search(arr, target))
+
+        elif choice == "2":
+            arr = [64, 25, 12, 22, 11]
+            print("Original Array:", arr)
+            print("Bubble Sort:", bubble_sort(arr.copy()))
+            print("Selection Sort:", selection_sort(arr.copy()))
+            print("Insertion Sort:", insertion_sort(arr.copy()))
+
+        elif choice == "3":
+            n = 5
+            print(f"Factorial of {n}:", factorial(n))
+            print(f"Fibonacci({n}):", fibonacci(n))
+
+        elif choice == "4":
+            print("\nTower of Hanoi with 3 disks:")
+            tower_of_hanoi(3, "A", "C", "B")
+
+        elif choice == "5":
+            quiz = FlashcardQuiz()
+            quiz.start_quiz()
+
+        elif choice == "6":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please select 1-6.")
+
+if __name__ == "__main__":
+    main()
